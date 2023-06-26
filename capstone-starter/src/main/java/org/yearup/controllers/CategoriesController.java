@@ -33,27 +33,39 @@ public class CategoriesController
 
     // add the appropriate annotation for a get action
     @GetMapping
-    public List<Category> getAll()
-    {
+    @PreAuthorize("permitAll()")
+    public List<Category> getAll() {
+        try {
         // find and return all categories
         return categoryDao.getAllCategories();
+        } catch(Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     // add the appropriate annotation for a get action
     @GetMapping("/{id}")
-    public Category getById(@PathVariable int id)
-    {
+    @PreAuthorize("permitAll()")
+    public Category getById(@PathVariable int id) {
+        try {
         // get the category by id
         return categoryDao.getById(id);
+        } catch(Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
     @GetMapping("{categoryId}/products")
-    public List<Product> getProductsById(@PathVariable int categoryId)
-    {
-        // get a list of product by categoryId
-        return productDao.listByCategoryId(categoryId);
+    @PreAuthorize("permitAll()")
+    public List<Product> getProductsById(@PathVariable int categoryId) {
+        try {
+            // get a list of product by categoryId
+            return productDao.listByCategoryId(categoryId);
+        } catch(Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     // add annotation to call this method for a POST action
