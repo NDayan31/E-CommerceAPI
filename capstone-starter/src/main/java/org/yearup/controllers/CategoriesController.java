@@ -1,5 +1,6 @@
 package org.yearup.controllers;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,10 +50,10 @@ public class CategoriesController
     public Category getById(@PathVariable int id) {
         try {
         // get the category by id
-            if (categoryDao.getById(id) == null) {
-                
-            }
+            if (categoryDao.getById(id) == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+
         return categoryDao.getById(id);
+
         } catch(Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
