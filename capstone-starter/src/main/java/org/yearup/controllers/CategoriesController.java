@@ -49,13 +49,15 @@ public class CategoriesController
     @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int id) {
         try {
-        // get the category by id
-            if (categoryDao.getById(id) == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+            // get the category by id
+            if (categoryDao.getById(id) == null) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+            }
 
         return categoryDao.getById(id);
 
         } catch(Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
     }
 
