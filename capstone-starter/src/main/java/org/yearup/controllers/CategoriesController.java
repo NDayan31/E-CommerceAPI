@@ -48,17 +48,18 @@ public class CategoriesController
     @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int id) {
+        Category category = null;
         try {
-            // get the category by id
-            if (categoryDao.getById(id) == null) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
-            }
-
-        return categoryDao.getById(id);
+            category = categoryDao.getById(id);
 
         } catch(Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
+
+        if (category == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
+        return category;
     }
 
     // the url to return all products in category 1 would look like this
